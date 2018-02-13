@@ -8,7 +8,7 @@ public class Hacker : MonoBehaviour {
     //Game State
     int level; //(member variable) integers start with default value of zero
     enum Screen { MainMenu, Password, Win };
-    Screen currentScreen = Screen.MainMenu;
+    Screen currentScreen;
     
     // Use this for initialization
     void Start () {
