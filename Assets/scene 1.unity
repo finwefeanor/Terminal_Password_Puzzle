@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -323,12 +323,12 @@ Prefab:
     - target: {fileID: 114399372335518172, guid: c46548f7b668a78409fa399c095e4e6b,
         type: 2}
       propertyPath: charactersHigh
-      value: 14
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 114399372335518172, guid: c46548f7b668a78409fa399c095e4e6b,
         type: 2}
       propertyPath: charactersWide
-      value: 50
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 114399372335518172, guid: c46548f7b668a78409fa399c095e4e6b,
         type: 2}
@@ -339,6 +339,16 @@ Prefab:
         type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511547698080430, guid: c46548f7b668a78409fa399c095e4e6b,
+        type: 2}
+      propertyPath: m_ReferencePixelsPerUnit
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 223448067776572440, guid: c46548f7b668a78409fa399c095e4e6b,
+        type: 2}
+      propertyPath: m_OverridePixelPerfect
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c46548f7b668a78409fa399c095e4e6b, type: 2}

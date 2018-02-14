@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class Hacker : MonoBehaviour {
     //Game configuration data
-    string[] level1Passwords = {"informant", "gulag", "recon", "classified", "payback"};
-    string[] level2Passwords = { "prisoner", "arrest", "glock", "response", "copy", "farm" };
+    string[] level1Passwords = {"ship", "captain", "eyepatch", "treasure", "kraken", "rum"};
+    string[] level2Passwords = { "informant", "gulag", "recon", "classified", "soldier", "covertops" };
+    string[] level3Passwords = { "wasteland", "radaway", "pipboy", "fatman", "overseer", "radiation" };
 
     //Game State
     int level; //(member variable) integers start with default value of zero
@@ -19,18 +20,14 @@ public class Hacker : MonoBehaviour {
         ShowMainMenu();
     }
 
-    void Update() {
-
-    }
-
     void ShowMainMenu() {
         currentScreen = Screen.MainMenu;
         Terminal.ClearScreen();
         Terminal.WriteLine("Which one would you want to hack in?");
-        Terminal.WriteLine("Press 1 to hack in CIA.");
-        Terminal.WriteLine("Press 2 to hack in KGB");
-        Terminal.WriteLine("Press 3 to hack in MI6");
-        //Terminal.WriteLine("Press 3 to hack in MOSSAD.");
+        Terminal.WriteLine("Press 1 to hack in Black Pearl");
+        Terminal.WriteLine("Press 2 to hack in CIA");
+        Terminal.WriteLine("Press 3 to hack in Vault-Tec");
+        Terminal.WriteLine("");
         Terminal.WriteLine("Enter your selection:");
     }
 
@@ -60,7 +57,7 @@ public class Hacker : MonoBehaviour {
         if (isValidLevel)
         {
             level = int.Parse(input); //this turns "string input" to "integer" and puts it in variable(level)
-            StartGame();
+            AskingPassword();
         }
         else if (input == "007")
         {
@@ -73,9 +70,16 @@ public class Hacker : MonoBehaviour {
         }
     }
 
-    void StartGame() {
+    void AskingPassword() {
         Terminal.ClearScreen();
         currentScreen = Screen.Password;
+        SetRandomPassword();
+        Terminal.WriteLine("Enter your password, hint: " + password.Anagram());
+        Terminal.WriteLine("");
+        Terminal.WriteLine("*(type 'menu' to go back) ");
+    }
+
+    void SetRandomPassword() {
         int index;
         switch (level)
         {
@@ -88,14 +92,13 @@ public class Hacker : MonoBehaviour {
                 password = level2Passwords[index];
                 break;
             case 3:
-                index = UnityEngine.Random.Range(0, level2Passwords.Length);
-                password = level2Passwords[index];
+                index = UnityEngine.Random.Range(0, level3Passwords.Length);
+                password = level3Passwords[index];
                 break;
             default:
                 Debug.LogError("Intruder!");
                 break;
         }
-        Terminal.WriteLine("Please enter your password");
     }
 
     void CheckPassword(string input) 
@@ -106,7 +109,7 @@ public class Hacker : MonoBehaviour {
         }
         else
         {
-            Terminal.WriteLine("Wrong Password! Try again ");
+            AskingPassword();
         }
     }
 
@@ -120,7 +123,7 @@ public class Hacker : MonoBehaviour {
         switch (level)
         {
             case 1:
-                Terminal.WriteLine("Bravo! Access Granted ");
+                Terminal.WriteLine("Adventure awaits! ");
                 Terminal.WriteLine(@"
             (((%%)))
          ((oo#%%%(=oooo0ooo0
@@ -132,20 +135,43 @@ public class Hacker : MonoBehaviour {
       (|\ | |/|)    ??
         (_===_)      ?
 
-"               );
+hit 'enter' to go back
+"              );
                 break;
             case 2:
-                Terminal.WriteLine("You are intelligent! ");
+                Terminal.WriteLine("Trespassers! You are under arrest! ");
                 Terminal.WriteLine(@"
 WAR,
  WAR NEVER CHANGES
-           \☻/\☻/
-░░░░░░░░░░░░▌░ ▌
-░░░░░░░░░░░/ \/ \
+__      _____
+-=|_______|___
+        (____|)             \☻/\☻/
+      ░░ ▌░ ▌                ▌░ ▌
+░░░                         / \/ \
           ███████]▄▄▄▄▄▄▄▄▄----------●
       ▂▄▅█████████▅▄▃▂
    I███████████████████].
-"               );
+
+hit 'enter' to go back
+");
+                break;
+            case 3:
+                Terminal.WriteLine("Radiation detected. Use Radaway! ");
+                Terminal.WriteLine(@"
+     (  )  _____  (  )         
+      \ \/       \/ /
+       \| []   [] |/
+        (_  /^\  _)
+          \  -  /
+         / xxxxx \
+       _/ /{___}\ \_
+      (_ _)     (_ _)
+
+hit 'enter' to go back
+");
+                break;
+            default:
+                Debug.LogError("Invalid level reached");
                 break;
         }
         
