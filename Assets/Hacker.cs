@@ -32,10 +32,15 @@ public class Hacker : MonoBehaviour {
     }
 
     void OnUserInput(string input) {
+        // we can always go direct to mainmenu
         if (input.Equals("menu", System.StringComparison.OrdinalIgnoreCase)) //ignores Capital word
-            //(input == "menu") // we can always go direct to mainmenu
         {
             ShowMainMenu();
+        }
+        else if (input == "close" || input == "exit" || input == "quit")
+        {
+            Terminal.WriteLine("If you're on the web, just close the tab.");
+            Quit();
         }
         else if (currentScreen == Screen.MainMenu)
         {
@@ -50,6 +55,16 @@ public class Hacker : MonoBehaviour {
             currentScreen = Screen.MainMenu;
             ShowMainMenu();
         }
+    }
+
+    void Quit() { //quit function for web application or editor. checkback later.
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #elif UNITY_WEBGL
+            Application.OpenURL("about:blank");
+        #elif UNITY_STANDALONE
+            Application.Quit();
+        #endif
     }
 
     void RunMainMenu(string input) {
