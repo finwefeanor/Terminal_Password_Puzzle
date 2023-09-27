@@ -2,21 +2,37 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class Hacker : MonoBehaviour {
+public class Hacker : MonoBehaviour
+{
 
     //Game State
-    int level; //(member variable) integers start with default value of zero
+    int level;
     enum Screen { MainMenu, Password, Win };
     Screen currentScreen = Screen.MainMenu;
-    
-    // Use this for initialization
-    void Start () {
+
+    const int maxAttempts = 3;
+    int attemptsRemaining = maxAttempts;
+
+    string password;
+    string hint;
+
+    Dictionary<int, string[]> passwordDatabase = new Dictionary<int, string[]> {
+        { 1, new[] { "spy", "agent", "mission" } },
+        { 2, new[] { "sputnik", "russia", "coldwar" } },
+        { 3, new[] { "israel", "intelligence", "espionage" } }
+    };
+
+    void Start()
+    {
         ShowMainMenu();
     }
 
-    void ShowMainMenu() {
+    void ShowMainMenu()
+    {
         currentScreen = Screen.MainMenu;
+        attemptsRemaining = maxAttempts;
         Terminal.ClearScreen();
         Terminal.WriteLine("Which one would you want to hack in?");
         Terminal.WriteLine("Press 1 to hack in CIA.");
@@ -25,8 +41,9 @@ public class Hacker : MonoBehaviour {
         Terminal.WriteLine("Enter your selection:");
     }
 
-    void OnUserInput(string input) {
-        if (input == "menu") // we can always go direct to mainmenu
+    void OnUserInput(string input)
+    {
+        if (input == "menu")
         {
             ShowMainMenu();
         }
@@ -34,17 +51,17 @@ public class Hacker : MonoBehaviour {
         {
             RunMainMenu(input);
         }
+        else if (currentScreen == Screen.Password)
+        {
+            CheckPassword(input);
+        }
     }
 
-    void RunMainMenu(string input) {
-        if (input == "1")
+    void RunMainMenu(string input)
+    {
+        bool isValidLevel = int.TryParse(input, out level) && passwordDatabase.ContainsKey(level);
+        if (isValidLevel)
         {
-            level = 1;
-            StartGame();
-        }
-        else if (input == "2")
-        {
-            level = 2;
             StartGame();
         }
         else if (input == "007")
@@ -57,11 +74,44 @@ public class Hacker : MonoBehaviour {
         }
     }
 
-    void StartGame() {
+    void StartGame()
+    {
         currentScreen = Screen.Password;
-        Terminal.WriteLine("You have chosen level " + level);
-        Terminal.WriteLine("Please enter your password");
+        Terminal.ClearScreen();
+        SetRandomPassword();
+        Terminal.WriteLine($"Enter the password for level {level}");
+        Terminal.WriteLine($"Hint: {hint}");
+        Terminal.WriteLine($"Attempts left: {attemptsRemaining}");
     }
 
- 
+    void SetRandomPassword()
+    {
+        string[] passwordsForLevel = passwordDatabase[level];
+        int passwordIndex = UnityEngine.Random.Range(0, passwordsForLevel.Length);
+        password = passwordsForLevel[passwordIndex];
+        hint = string.Join("", password.ToCharArray().OrderBy(g => UnityEngine.Random.Range(0, password.Length)).ToArray());
+    }
+
+    void CheckPassword(string input)
+    {
+        if (input == password)
+        {
+            Terminal.WriteLine("Congratulations! Access granted.");
+            currentScreen = Screen.Win;
+        }
+        else
+        {
+            attemptsRemaining--;
+            if (attemptsRemaining <= 0)
+            {
+                Terminal.WriteLine("All attempts exhausted. Please try again.");
+                ShowMainMenu();
+            }
+            else
+            {
+                Terminal.WriteLine($"Incorrect! Attempts left: {attemptsRemaining}");
+                Terminal.WriteLine($"Hint: {hint}");
+            }
+        }
+    }
 }
